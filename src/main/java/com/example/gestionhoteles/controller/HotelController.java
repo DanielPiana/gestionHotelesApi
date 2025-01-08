@@ -1,5 +1,6 @@
 package com.example.gestionhoteles.controller;
 
+import com.example.gestionhoteles.model.Habitacion;
 import com.example.gestionhoteles.model.Hotel;
 import com.example.gestionhoteles.service.HotelServices;
 import org.springframework.http.HttpStatus;
@@ -33,4 +34,15 @@ public class HotelController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener todos los hoteles ", e);
         }
     }
+
+    /*@GetMapping("/findRoom")
+    public ResponseEntity<List<Habitacion>> buscarHabitaciones(
+            @RequestParam String tamano,
+            @RequestParam double precioMin,
+            @RequestParam double precioMax,
+            @RequestParam int idHotel
+    ) {
+        List<Habitacion> listaHabitaciones = buscarHabitaciones(tamano, precioMin, precioMax, idHotel);
+        return ResponseEntity.ok(listaHabitaciones);
+    }*/
 }
