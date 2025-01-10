@@ -34,6 +34,23 @@ public class HotelController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener todos los hoteles ", e);
         }
     }
+    @GetMapping("/get/categoria/{categoria}")
+    public List<Hotel> getHotelByCategoria(@PathVariable String categoria) {
+        try {
+            return hotelServices.findByCategoria(categoria);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener hoteles por categoría", e);
+        }
+    }
+
+    @GetMapping("/get/localidad/{localidad}")
+    public List<Hotel> getHotelByLocalidad(@PathVariable String localidad) {
+        try {
+            return hotelServices.findByLocalidad(localidad);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener hoteles por localidad", e);
+        }
+    }
 
     /*@GetMapping("/findRoom")
     public ResponseEntity<List<Habitacion>> buscarHabitaciones(

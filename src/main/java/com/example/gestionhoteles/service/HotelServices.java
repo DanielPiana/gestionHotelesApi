@@ -22,4 +22,15 @@ public class HotelServices {
         return hotelRepository.findAll();
     }
 
+    public List<Hotel> findByCategoria(String categoria) {
+        return hotelRepository.findByCategoria(categoria);
+    }
+
+    public List<Hotel> findByLocalidad(String localidad) {
+        return hotelRepository.findByLocalidad(localidad);
+    }
+
+    public boolean existsById(Integer integer) {
+        return hotelRepository.existsById(integer);
+    }
 }

@@ -13,15 +13,14 @@ public interface HotelRepository extends JpaRepository<Hotel,Integer> {//Ese int
 /*Búsqueda de habitaciones de un hotel por tamaño y precio
 (rango minimo→máximo). Solo mostrará aquellas habitaciones que
 estén marcadas como libres*/
-    @Query("SELECT h FROM Habitacion h WHERE " +
-            "h.tamano = :tamano AND " +
-            "h.precioNoche BETWEEN :precioMin AND :precioMax AND " +
-            "h.ocupada = false AND " +
-            "h.hotel.idHotel = :idHotel")
-    List<Habitacion> buscarHabitaciones(
-            @Param("tamano") String tamano,
-            @Param("precioMin") double precioMin,
-            @Param("precioMax") double precioMax,
-            @Param("idHotel") int idHotel
-    );
+
+    //LISTA DE HOTELES CON UNA CATEGORIA EN CONCRETO
+    @Query("SELECT h FROM Hotel h WHERE h.categoria = :categoria")
+    List<Hotel> findByCategoria(String categoria);
+
+    //LISTA DE HOTELES CON UNA LOCALIDAD EN CONCRETO
+    @Query("SELECT h FROM Hotel h WHERE h.localidad = :localidad")
+    List<Hotel> findByLocalidad(String localidad);
+
+
 }
