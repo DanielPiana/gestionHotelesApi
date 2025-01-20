@@ -1,7 +1,7 @@
 package com.example.gestionhoteles.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,13 +10,11 @@ import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name="hotel")
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="idHotel")
+    @Column(name="id_hotel")
     private int idHotel;
 
     @Column(name="nombre")

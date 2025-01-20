@@ -1,18 +1,14 @@
 package com.example.gestionhoteles.controller;
 
 import com.example.gestionhoteles.model.Habitacion;
-import com.example.gestionhoteles.model.Hotel;
-import com.example.gestionhoteles.repository.HabitacionRepository;
 import com.example.gestionhoteles.service.HabitacionServices;
 import com.example.gestionhoteles.service.HotelServices;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/habitacion")
@@ -50,7 +46,7 @@ public class HabitacionController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> createHabitacion(@Valid @RequestBody Habitacion habitacion) {
+    public ResponseEntity<?> createHabitacion(@RequestBody Habitacion habitacion) {
         // Validar que el hotel existe en la base de datos
         if (habitacion.getHotel() != null) {
             int hotelId = habitacion.getHotel().getIdHotel();

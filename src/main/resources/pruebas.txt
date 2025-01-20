@@ -1,0 +1,95 @@
+------CREAR USUARIO-------
+Post localhost:9999/api/createUser
+{
+     "username": "juan",
+     "password": "juan",
+     "token": "token"
+}
+------GENERAR TOKEN-------
+Post localhost:9999/api/loginUser
+Body x-www-form-urlencoded
+username juan
+password juan
+
+------CREAR HOTELES------- CON TOKEN
+{
+  "nombre": "Hotel Montaña Verde",
+  "descripcion": "Un refugio en las montañas, ideal para escapadas de fin de semana.",
+  "categoria": "4 estrellas",
+  "piscina": false,
+  "localidad": "Cerro Azul",
+  "habitaciones": []
+}
+{
+  "nombre": "Hotel Costa Azul",
+  "descripcion": "Hotel de lujo frente al mar, con vistas espectaculares y un restaurante gourmet.",
+  "categoria": "5 estrellas",
+  "piscina": true,
+  "localidad": "Acapulco",
+  "habitaciones": []
+}
+{
+  "nombre": "Hotel La Estancia",
+  "descripcion": "Un hotel acogedor y tranquilo, ideal para pasar unos días relajantes en familia.",
+  "categoria": "3 estrellas",
+  "piscina": true,
+  "localidad": "Puebla",
+  "habitaciones": []
+}
+{
+  "nombre": "Hotel Sol y Luna",
+  "descripcion": "Un hotel boutique con un enfoque en el bienestar y la desconexión.",
+  "categoria": "4 estrellas",
+  "piscina": true,
+  "localidad": "Tulum",
+  "habitaciones": []
+}
+------COMPROBAR HOTELES------- SIN TOKEN
+localhost:9999/api/hotel/all
+
+------CREAR HABITACIONES-------
+{
+    "tamano": 10000,
+    "precioNoche": 1000000.0,
+    "desayuno": false,
+    "ocupada": true,
+    "hotel": {
+            "idHotel": 1
+        }
+}
+{
+    "tamano": 200,
+    "precioNoche": 50.0,
+    "desayuno": true,
+    "ocupada": true,
+    "hotel": {
+            "idHotel": 2
+        }
+}
+{
+    "tamano": 50,
+    "precioNoche": 1000.0,
+    "desayuno": false,
+    "ocupada": false,
+    "hotel": {
+            "idHotel": 3
+        }
+}
+{
+    "tamano": 250,
+    "precioNoche": 150.0,
+    "desayuno": false,
+    "ocupada": false,
+    "hotel": {
+            "idHotel": 4
+        }
+}
+{
+    "tamano": 50,
+    "precioNoche": 1000.0,
+    "desayuno": false,
+    "ocupada": false,
+    "hotel": {
+            "idHotel": 4
+        }
+}

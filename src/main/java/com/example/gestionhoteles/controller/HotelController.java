@@ -1,6 +1,6 @@
 package com.example.gestionhoteles.controller;
 
-import com.example.gestionhoteles.model.Habitacion;
+
 import com.example.gestionhoteles.model.Hotel;
 import com.example.gestionhoteles.service.HotelServices;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/hotel")
@@ -25,9 +27,10 @@ public class HotelController {
         hotelServices.save(hotel);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+    /*
+    * */
     @GetMapping("/all")
     public List<Hotel> getAllHoteles() {
-
         try {
             return hotelServices.findAll();
         } catch (Exception e) {
@@ -51,15 +54,4 @@ public class HotelController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener hoteles por localidad", e);
         }
     }
-
-    /*@GetMapping("/findRoom")
-    public ResponseEntity<List<Habitacion>> buscarHabitaciones(
-            @RequestParam String tamano,
-            @RequestParam double precioMin,
-            @RequestParam double precioMax,
-            @RequestParam int idHotel
-    ) {
-        List<Habitacion> listaHabitaciones = buscarHabitaciones(tamano, precioMin, precioMax, idHotel);
-        return ResponseEntity.ok(listaHabitaciones);
-    }*/
 }

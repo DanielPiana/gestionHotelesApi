@@ -1,25 +1,23 @@
 package com.example.gestionhoteles.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name="Habitacion")
 public class Habitacion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="idHabitacion")
+    @Column(name="id_habitacion")
     private int idHabitacion;
 
     @Column(name="tamano")
     private int tamano;
 
-    @Column(name="precioNoche")
+    @Column(name="precio_noche")
     private double precioNoche;
 
     @Column(name="desayuno")
@@ -29,7 +27,7 @@ public class Habitacion {
     private boolean ocupada;
 
     @ManyToOne
-    @JoinColumn (name="idHotel",referencedColumnName = "idHotel")
+    @JoinColumn (name="id_hotel",referencedColumnName = "id_hotel")
     @JsonBackReference // Para que no sea un bucle infinito
     private Hotel hotel;
 }
