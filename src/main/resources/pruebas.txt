@@ -47,7 +47,7 @@ password juan
 ------COMPROBAR HOTELES------- SIN TOKEN
 localhost:9999/api/hotel/all
 
-------CREAR HABITACIONES-------
+------CREAR HABITACIONES------- CON TOKEN
 {
     "tamano": 10000,
     "precioNoche": 1000000.0,
@@ -93,3 +93,29 @@ localhost:9999/api/hotel/all
             "idHotel": 4
         }
 }
+{
+    "tamano": 600,
+    "precioNoche": 10.0,
+    "desayuno": false,
+    "ocupada": false,
+    "hotel": {
+            "idHotel": 4
+        }
+}
+{
+    "tamano": 60,
+    "precioNoche": 19.0,
+    "desayuno": false,
+    "ocupada": false,
+    "hotel": {
+            "idHotel": 4
+        }
+}
+------BUSCAR HOTEL POR LOCALIDAD------- SIN TOKEN
+localhost:9999/api/hotel/get/localidad/Tulum
+
+------BUSCAR HOTEL POR CATEGORIA------- SIN TOKEN
+localhost:9999/api/hotel/get/categoria/4 estrellas
+
+------BUSCAR HABITACION DE HOTEL POR PRECIO, TAMAÑO Y DISPONIBILIDAD------- SIN TOKEN
+localhost:9999/api/habitacion/get/personalizado/4/55/500/15/200
