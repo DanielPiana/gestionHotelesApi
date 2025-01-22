@@ -27,8 +27,6 @@ public class HotelController {
         hotelServices.save(hotel);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    /*
-    * */
     @GetMapping("/all")
     public List<Hotel> getAllHoteles() {
         try {
