@@ -45,10 +45,7 @@ public class GestionHotelesApplication {
 						.antMatchers(HttpMethod.GET, "/api/hotel/get/localidad/{localidad}").permitAll()
 						.antMatchers(HttpMethod.GET, "/api/hotel/get/categoria/{categoria}").permitAll()
 						.antMatchers(HttpMethod.GET, "/api/habitacion/get/personalizado/{idHotel}/{tamanoMin}/{tamanoMax}/{precioMin}/{precioMax}").permitAll()
-						.antMatchers(HttpMethod.GET, "/api/habitacion/all").permitAll()
-						.antMatchers(HttpMethod.GET, "/api/hotel/all").permitAll()
 						.antMatchers(HttpMethod.POST, "/api/loginUser").permitAll()
-						.antMatchers(HttpMethod.POST, "/api/createUser").permitAll()
 						.antMatchers(AUTH_WHITELIST).permitAll() //SWAGGER
 
 						// TODAS LAS PETICIONES RESTANTES QUE NO SE ESPECIFIQUEN COMO .permitAll() REQUERIRAN AUTENTIFICACION

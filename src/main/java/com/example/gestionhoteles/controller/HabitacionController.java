@@ -24,49 +24,55 @@ public class HabitacionController {
 
     //SE PUEDE USAR PutMapping PERO PatchMapping ES MAS ADECUADO PARA ACTUALIZACIONES PARCIALES
     @PatchMapping("/update/ocupada/{idHabitacion}")
-    public ResponseEntity<Habitacion> updateOcupada(@PathVariable int idHabitacion) {
-        // Buscamos la habitación con el ID proporcionado
+    public ResponseEntity<?> updateOcupada(@PathVariable int idHabitacion) {
+        // BUSCAMOS LA HABITACION CON EL ID PROPORCIONADO
         Optional<Habitacion> habitacionOptional = habitacionServices.findById(idHabitacion);
 
-        // Si la habitación existe
+        // SI LA HABITACION EXISTE
         if (habitacionOptional.isPresent()) {
-            // La guardamos
+            // LA COGEMOS
             Habitacion habitacion = habitacionOptional.get();
 
-            // Cambiamos el valor de ocupado al contrario
+            // CAMBIAMOS EL VALOR DE OCUPADO AL CONTRARIO
             habitacion.setOcupada(!habitacion.isOcupada());
 
-            // Y lo guardamos
+            // LA GUARDAMOS CON EL CAMBIO DE ESTADO
             habitacionServices.save(habitacion);
 
-            return new ResponseEntity<>(habitacion, HttpStatus.OK); // 200 OK con la habitación actualizada
+            return new ResponseEntity<>(habitacion, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found si no se encuentra la habitación
+            return new ResponseEntity<>("Esa habitación no existe", HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/save")
     public ResponseEntity<?> createHabitacion(@RequestBody Habitacion habitacion) {
-        // Validar que el hotel existe en la base de datos
+        // VALIDAMOS QUE EL HOTEL DE LA HABITACION EXISTA EN LA BASE DE DATOS
         if (habitacion.getHotel() != null) {
             int hotelId = habitacion.getHotel().getIdHotel();
-            if (!hotelServices.existsById(hotelId)) {
+            if (!hotelServices.existsById(hotelId)) { // SI EL HOTEL NO EXISTE, MOSTRAMOS MENSAJE PERSONALIZADO
                 return new ResponseEntity<>("Hotel no encontrado", HttpStatus.BAD_REQUEST);
             }
         }
-
-        // Si el hotel existe, guardamos la habitación
+        // SI EL HOTEL EXISTE, GUARDAMOS LA HABITACION
         habitacionServices.save(habitacion);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);  // 201 Created
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
     @GetMapping("/all/personalizado") //METODO PARA UN PRINT PERSONALIZADO Y VER EL ID DE HOTEL
-    public ResponseEntity<List<Map<String, Object>>> getAllHabitacionesPersonalizado() {
+    public ResponseEntity<?> getAllHabitacionesPersonalizado() {
+        // COGEMOS TODAS LAS HABITACIONES
         List<Habitacion> habitaciones = habitacionServices.findAll();
+
+        if (habitaciones.isEmpty()) { // SI LA LISTA ESTÁ VACÍA DEVOLVEMOS UNA RESPUESTA PERSONALIZADA
+            return new ResponseEntity<>("Todavía no existen habitaciones", HttpStatus.BAD_REQUEST);
+        }
+
         List<Map<String, Object>> respuesta = new ArrayList<>();
 
+        // RECORREMOS LA LISTA DE HABITACIONES AÑADIENDOLE EL ID DEL HOTEL AL QUE PERTENECEN
         for (Habitacion h : habitaciones) {
             Map<String, Object> datos = new HashMap<>();
             datos.put("idHabitacion", h.getIdHabitacion());
@@ -77,38 +83,50 @@ public class HabitacionController {
             datos.put("idHotel", h.getHotel() != null ? h.getHotel().getIdHotel() : null);
             respuesta.add(datos);
         }
-
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
     @GetMapping("/get/personalizado/{idHotel}/{tamanoMin}/{tamanoMax}/{precioMin}/{precioMax}")
-    public ResponseEntity<List<Habitacion>> getBySizePriceAvailable(
+    public ResponseEntity<?> getBySizePriceAvailable(
             @PathVariable int idHotel,
             @PathVariable double precioMax,
             @PathVariable double precioMin,
             @PathVariable int tamanoMax,
             @PathVariable int tamanoMin) {
         try {
+            // COGEMOS TODAS LAS HABITACIONES
             List<Habitacion> habitaciones = habitacionServices.findBySizePriceAvailable(idHotel, tamanoMin, tamanoMax, precioMin, precioMax);
 
-            if (habitaciones.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Si no hay habitaciones disponibles
+            if (habitaciones.isEmpty()) { // SI LA LISTA ESTÁ VACÍA DEVOLVEMOS UNA RESPUESTA PERSONALIZADA
+                return new ResponseEntity<>("No hay habitaciones con esas características", HttpStatus.BAD_REQUEST);
             }
-
-            return new ResponseEntity<>(habitaciones, HttpStatus.OK); // Si hay habitaciones disponibles
-        } catch (Exception e) {
+            // SI HAY HOTELES, DEVOLVEMOS LA LISTA
+            return new ResponseEntity<>(habitaciones, HttpStatus.OK);
+        } catch (Exception e) { // SI HAY ERROR DEVOLVEMOS RESPUESTA PERSONALIZADA
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener todos los hoteles ", e);
         }
     }
     @GetMapping("/all")
-    public List<Habitacion> getAllHabitaciones() {
+    public ResponseEntity<?> getAllHabitaciones() {
         try {
-            return habitacionServices.findAll();
-        } catch (Exception e) {
+            // COGEMOS TODAS LAS HABITACIONES
+            List<Habitacion> habitaciones = habitacionServices.findAll();
+
+            if (habitaciones.isEmpty()) {// SI LA LISTA ESTÁ VACÍA DEVOLVEMOS UNA RESPUESTA PERSONALIZADA
+                return new ResponseEntity<>("Todavía no existen habitaciones", HttpStatus.BAD_REQUEST);
+            }
+            // SI HAY HOTELES, DEVOLVEMOS LA LISTA
+            return new ResponseEntity<>(habitaciones, HttpStatus.OK);
+
+        } catch (Exception e) { // SI HAY ERROR DEVOLVEMOS RESPUESTA PERSONALIZADA
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener todos los hoteles ", e);
         }
     }
     @DeleteMapping("delete/{idHabitacion}")
     public ResponseEntity<?> deleteHabitacion(@PathVariable int idHabitacion) {
+        Optional<Habitacion> habitacion = habitacionServices.findById(idHabitacion);
+        if (!habitacion.isPresent()) { // SI EXISTE LA HABITACION, LA BORRAMOS
+            return new ResponseEntity<>("No existe una habitación con ese ID", HttpStatus.BAD_REQUEST);
+        }
         habitacionServices.deleteById(idHabitacion);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

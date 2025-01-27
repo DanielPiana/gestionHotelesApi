@@ -1,10 +1,3 @@
-------CREAR USUARIO-------
-Post localhost:9999/api/createUser
-{
-     "username": "juan",
-     "password": "juan",
-     "token": "token"
-}
 ------GENERAR TOKEN-------
 Post localhost:9999/api/loginUser
 Body x-www-form-urlencoded
@@ -44,7 +37,7 @@ password juan
   "localidad": "Tulum",
   "habitaciones": []
 }
-------COMPROBAR HOTELES------- SIN TOKEN
+------COMPROBAR HOTELES------- CON TOKEN
 localhost:9999/api/hotel/all
 
 ------CREAR HABITACIONES------- CON TOKEN

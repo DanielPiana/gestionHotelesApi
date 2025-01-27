@@ -1,10 +1,12 @@
 package com.example.gestionhoteles.service;
 
+import com.example.gestionhoteles.model.Habitacion;
 import com.example.gestionhoteles.model.Hotel;
 import com.example.gestionhoteles.repository.HotelRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HotelServices {
@@ -28,6 +30,10 @@ public class HotelServices {
 
     public List<Hotel> findByLocalidad(String localidad) {
         return hotelRepository.findByLocalidad(localidad);
+    }
+
+    public Optional<Hotel> existsByName(String name) {
+        return hotelRepository.findHotelByNombre(name);
     }
 
     public boolean existsById(Integer integer) {

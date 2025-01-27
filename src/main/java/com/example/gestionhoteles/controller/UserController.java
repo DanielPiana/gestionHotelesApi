@@ -26,20 +26,8 @@ public class UserController {
         this.userServices = userServices;
     }
 
-
-    @PostMapping("createUser") // localhost:9999/api/createUser
-    public ResponseEntity<?> createHotel(@RequestBody User user) {
-        userServices.save(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-        /*{
-            "username": "juan",
-            "password": "juan",
-            "token": "token"
-        }*/
-    }
-
     @PostMapping("/loginUser") // localhost:9999/api/loginUser
-    public ResponseEntity<User> login(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public ResponseEntity<?> login(@RequestParam("username") String username, @RequestParam("password") String password) {
         // RECUPERAMOS EL USUARIO EXISTENTE BASÁNDONOS EN EL NOMBRE DE USUARIO Y LA CONTRASEÑA
         Optional<User> optionalUser = userServices.findByUsernameAndPassword(username, password);
 
@@ -60,7 +48,8 @@ public class UserController {
             return ResponseEntity.ok(user);
         } else {
             // SI EL USUARIO NO EXISTE, RETORNAMOS UNA RESPUESTA DE ERROR 401 (NO AUTORIZADO)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Acceso no autorizado. Por favor, inicie sesión para continuar.");
         }
     }
 

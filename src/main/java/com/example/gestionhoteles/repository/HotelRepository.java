@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface HotelRepository extends JpaRepository<Hotel,Integer> {//Ese integer es por el id de hotel
 //Esta clase sirve para hacer consultas personalizadas
@@ -22,5 +23,6 @@ estén marcadas como libres*/
     @Query("SELECT h FROM Hotel h WHERE h.localidad = :localidad")
     List<Hotel> findByLocalidad(String localidad);
 
-
+    @Query("SELECT h FROM Hotel h WHERE h.nombre = :nombre")
+    Optional<Hotel> findHotelByNombre(String nombre);
 }
