@@ -3,6 +3,9 @@ package com.example.gestionhoteles.controller;
 
 import com.example.gestionhoteles.model.Hotel;
 import com.example.gestionhoteles.service.HotelServices;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/hotel")
+@Tag(name = "Hoteles", description = "Operaciones relacionadas con hoteles")
 public class HotelController {
 
     private final HotelServices hotelServices;
@@ -23,17 +27,34 @@ public class HotelController {
         this.hotelServices = hotelServices;
     }
 
-    @PostMapping("/save")
+    @PostMapping("/guardar")
+    @Operation(
+            summary = "Guardar un hotel en la base de datos",
+            description = "Recibe en formato json los datos de un hotel." +
+                    "\n\nEjemplo:\n\n" +
+                    "```json\n" +
+                    "{\n" +
+                    "  \"nombre\": \"Hotel Montaña Verde\",\n" +
+                    "  \"descripcion\": \"Un refugio en las montañas, ideal para escapadas de fin de semana.\",\n" +
+                    "  \"categoria\": \"4 estrellas\",\n" +
+                    "  \"piscina\": false,\n" +
+                    "  \"localidad\": \"Cerro Azul\",\n" +
+                    "  \"habitaciones\": []\n" +
+                    "}"
+    )
     public ResponseEntity<?> createHotel(@RequestBody Hotel hotel) {
         Optional<Hotel> hotel1 = hotelServices.existsByName(hotel.getNombre());
         if (hotel1.isPresent()) {
             return new ResponseEntity<>("Un hotel con ese nombre ya existe, cámbialo y vuelve a intentarlo", HttpStatus.BAD_REQUEST);
         }
         hotelServices.save(hotel);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>("Hotel creado correctametne",HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/listar")
+    @Operation(
+            summary = "Visualizar todos los hoteles"
+    )
     public ResponseEntity<?> getAllHoteles() {
         try {
             // COGEMOS TODOS LOS HOTELES
@@ -48,7 +69,11 @@ public class HotelController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener todos los hoteles ", e);
         }
     }
-    @GetMapping("/get/categoria/{categoria}")
+    @GetMapping("/buscar/categoria/{categoria}")
+    @Operation(
+            summary = "Listar hoteles por categoría",
+            description = "Recibe la categoría como parámetro de búsqueda"
+    )
     public ResponseEntity<?> getHotelByCategoria(@PathVariable String categoria) {
         try {
             // COGEMOS TODOS LOS HOTELES
@@ -65,7 +90,11 @@ public class HotelController {
         }
     }
 
-    @GetMapping("/get/localidad/{localidad}")
+    @GetMapping("/buscar/localidad/{localidad}")
+    @Operation(
+            summary = "Listar hoteles por localidad",
+            description = "Recibe la localidad como parámetro de búsqueda"
+    )
     public ResponseEntity<?> getHotelByLocalidad(@PathVariable String localidad) {
         try {
             // COGEMOS TODOS LOS HOTELES

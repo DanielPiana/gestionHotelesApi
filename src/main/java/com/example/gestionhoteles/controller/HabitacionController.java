@@ -3,6 +3,8 @@ package com.example.gestionhoteles.controller;
 import com.example.gestionhoteles.model.Habitacion;
 import com.example.gestionhoteles.service.HabitacionServices;
 import com.example.gestionhoteles.service.HotelServices;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/habitacion")
+@Tag(name = "Habitaciones", description = "Operaciones relacionadas con habitaciones")
 public class HabitacionController {
     private final HabitacionServices habitacionServices;
 
@@ -23,7 +26,11 @@ public class HabitacionController {
     }
 
     //SE PUEDE USAR PutMapping PERO PatchMapping ES MAS ADECUADO PARA ACTUALIZACIONES PARCIALES
-    @PatchMapping("/update/ocupada/{idHabitacion}")
+    @PatchMapping("/cambiar_estado/ocupada/{idHabitacion}")
+    @Operation(
+            summary = "Cambiar el estado de una habitación",
+            description = "Si la habitación está ocupada se desocupara y viceversa"
+    )
     public ResponseEntity<?> updateOcupada(@PathVariable int idHabitacion) {
         // BUSCAMOS LA HABITACION CON EL ID PROPORCIONADO
         Optional<Habitacion> habitacionOptional = habitacionServices.findById(idHabitacion);
@@ -45,7 +52,22 @@ public class HabitacionController {
         }
     }
 
-    @PostMapping("/save")
+    @PostMapping("/guardar")
+    @Operation(
+            summary = "Guardar una habitación en la base de datos",
+            description = "Recibe en formato json los datos de una habitación." +
+                    "\n\nEjemplo:\n\n" +
+                    "```json\n" +
+                    "{\n" +
+                    "    \"tamano\": 10000,\n" +
+                    "    \"precioNoche\": 1000000.0,\n" +
+                    "    \"desayuno\": false,\n" +
+                    "    \"ocupada\": true,\n" +
+                    "    \"hotel\": {\n" +
+                    "            \"idHotel\": 1\n" +
+                    "        }\n" +
+                    "}"
+    )
     public ResponseEntity<?> createHabitacion(@RequestBody Habitacion habitacion) {
         // VALIDAMOS QUE EL HOTEL DE LA HABITACION EXISTA EN LA BASE DE DATOS
         if (habitacion.getHotel() != null) {
@@ -61,7 +83,10 @@ public class HabitacionController {
     }
 
 
-    @GetMapping("/all/personalizado") //METODO PARA UN PRINT PERSONALIZADO Y VER EL ID DE HOTEL
+    @GetMapping("/buscar/detallado") //METODO PARA UN PRINT PERSONALIZADO Y VER EL ID DE HOTEL
+    @Operation(
+            summary = "Lista las habitaciones, indicando el hotel al que pertenecen"
+    )
     public ResponseEntity<?> getAllHabitacionesPersonalizado() {
         // COGEMOS TODAS LAS HABITACIONES
         List<Habitacion> habitaciones = habitacionServices.findAll();
@@ -85,7 +110,22 @@ public class HabitacionController {
         }
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
-    @GetMapping("/get/personalizado/{idHotel}/{tamanoMin}/{tamanoMax}/{precioMin}/{precioMax}")
+    @GetMapping("/buscar/personalizado/{idHotel}/{tamanoMin}/{tamanoMax}/{precioMin}/{precioMax}")
+    @Operation(
+            summary = "Guardar una habitación en la base de datos",
+            description = "Recibe en formato JSON los datos de una habitación.\n\nEjemplo:\n\n" +
+                    "```json\n" +
+                    "{\n" +
+                    "  \"tamano\": 10000,\n" +
+                    "  \"precioNoche\": 1000000.0,\n" +
+                    "  \"desayuno\": false,\n" +
+                    "  \"ocupada\": true,\n" +
+                    "  \"hotel\": {\n" +
+                    "    \"idHotel\": 1\n" +
+                    "  }\n" +
+                    "}```"
+    )
+
     public ResponseEntity<?> getBySizePriceAvailable(
             @PathVariable int idHotel,
             @PathVariable double precioMax,
@@ -105,7 +145,10 @@ public class HabitacionController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener todos los hoteles ", e);
         }
     }
-    @GetMapping("/all")
+    @GetMapping("/buscar")
+    @Operation(
+            summary = "Listar habitaciones"
+    )
     public ResponseEntity<?> getAllHabitaciones() {
         try {
             // COGEMOS TODAS LAS HABITACIONES
@@ -121,7 +164,10 @@ public class HabitacionController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al obtener todos los hoteles ", e);
         }
     }
-    @DeleteMapping("delete/{idHabitacion}")
+    @DeleteMapping("borrar/{idHabitacion}")
+    @Operation(
+            summary = "Borrar habitación por ID"
+    )
     public ResponseEntity<?> deleteHabitacion(@PathVariable int idHabitacion) {
         Optional<Habitacion> habitacion = habitacionServices.findById(idHabitacion);
         if (!habitacion.isPresent()) { // SI EXISTE LA HABITACION, LA BORRAMOS

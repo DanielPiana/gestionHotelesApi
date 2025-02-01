@@ -42,10 +42,10 @@ public class GestionHotelesApplication {
 						.authorizeRequests()
 						// PERMITE QUE LA BUSQUEDA DE HOTEL POR LOCALIDAD O CATEGORIA Y LA BUSQUEDA
 						// DE UN HOTEL POR TAMAÑO Y PRECIO NO REQUIERAN NINGUN AUTENTIFICACION
-						.antMatchers(HttpMethod.GET, "/api/hotel/get/localidad/{localidad}").permitAll()
-						.antMatchers(HttpMethod.GET, "/api/hotel/get/categoria/{categoria}").permitAll()
-						.antMatchers(HttpMethod.GET, "/api/habitacion/get/personalizado/{idHotel}/{tamanoMin}/{tamanoMax}/{precioMin}/{precioMax}").permitAll()
-						.antMatchers(HttpMethod.POST, "/api/loginUser").permitAll()
+						.antMatchers(HttpMethod.GET, "/api/hotel/buscar/localidad/{localidad}").permitAll()
+						.antMatchers(HttpMethod.GET, "/api/hotel/buscar/categoria/{categoria}").permitAll()
+						.antMatchers(HttpMethod.GET, "/api/habitacion//buscar/personalizado/{idHotel}/{tamanoMin}/{tamanoMax}/{precioMin}/{precioMax}").permitAll()
+						.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 						.antMatchers(AUTH_WHITELIST).permitAll() //SWAGGER
 
 						// TODAS LAS PETICIONES RESTANTES QUE NO SE ESPECIFIQUEN COMO .permitAll() REQUERIRAN AUTENTIFICACION
