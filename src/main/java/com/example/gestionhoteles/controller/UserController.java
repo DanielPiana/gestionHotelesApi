@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/usuarios")
 @Tag(name = "Usuarios", description = "Operaciones relacionadas con usuarios")
 public class UserController {
 
@@ -93,8 +93,6 @@ public class UserController {
         userServices.deleteById(idUsuario);
         return new ResponseEntity<>("Usuario borrado correctamente",HttpStatus.CREATED);
     }
-
-
 
     private String getJWTToken(String username) {
         String secretKey = "mySecretKey";
